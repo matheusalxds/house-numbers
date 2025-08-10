@@ -1,6 +1,6 @@
 import { ZodError } from 'zod'
 
-import { ServerError } from '@/shared/errors/http'
+import { NotFoundError, ServerError } from '@/shared/errors/http'
 
 export interface HttpResponse<T = any> {
   body: T
@@ -26,4 +26,9 @@ export const badRequest = (error: Error | ZodIssue[]): HttpResponse => ({
 export const ok = <T>(data: T): HttpResponse<T> => ({
   body: data,
   statusCode: 200,
+})
+
+export const notFound = (field: string): HttpResponse => ({
+  body: { message: new NotFoundError(field).message, typeError: 'NotFound' },
+  statusCode: 404,
 })
