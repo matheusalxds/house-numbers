@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 
+import { genToken } from '@/modules/auth/application/controllers/test/mock/get-token'
 import { Snippet } from '@/modules/snippets/domain/entities/snippet.entity'
 import { SnippetModel } from '@/modules/snippets/infra/db/models/snippet.model'
 import { mockSnippet } from '@/modules/snippets/infra/db/models/test/mock/snippet.mock'
@@ -15,18 +16,21 @@ import {
 const baseRoute = '/v1/snippets'
 
 describe('SnippetListAllController', () => {
+  let token = ''
+
   beforeAll(async () => connectMemoryDb())
   afterAll(async () => disconnectMemoryDb())
   beforeEach(async () => {
     await clearDatabase()
+    token = await genToken()
   })
 
-  it('should 200 on success', async () => {
+  it('should return a paginated list on success', async () => {
     const firstSnippet = mockSnippet()
     const secondSnippet = mockSnippet()
     await SnippetModel.create([firstSnippet, secondSnippet])
 
-    const res = await request(app).get(baseRoute)
+    const res = await request(app).get(baseRoute).set('Authorization', `Bearer ${token}`)
 
     const typedBody = res.body as Pagination<Snippet>
     const status = res.status
@@ -42,5 +46,11 @@ describe('SnippetListAllController', () => {
     expect(typedBody.data[1].summary).toBe(secondSnippet.summary)
     expect(typedBody.data[1].createdAt).toBe(secondSnippet.createdAt.toISOString())
     expect(typedBody.data[1].updatedAt).toBe(secondSnippet.updatedAt.toISOString())
+  })
+
+  it('should return 401 if token is not provided', async () => {
+    const res = await request(app).get(baseRoute).set('Authorization', `Bearer `)
+
+    expect(res.status).toBe(401)
   })
 })

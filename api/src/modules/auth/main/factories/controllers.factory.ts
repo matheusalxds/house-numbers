@@ -1,5 +1,5 @@
-import { LoginController } from '@/modules/auth/domain/controller/login.controller'
-import { SignUpController } from '@/modules/auth/domain/controller/sign-up.controller'
+import { LoginController } from '@/modules/auth/application/controllers/login.controller'
+import { SignUpController } from '@/modules/auth/application/controllers/sign-up.controller'
 import { LoginUC } from '@/modules/auth/domain/use-cases/login'
 import { SignUpUC } from '@/modules/auth/domain/use-cases/sign-up'
 import { UserAUthRepository } from '@/modules/auth/infra/db/repos/user-auth.repo'

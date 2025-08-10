@@ -32,3 +32,8 @@ export const notFound = (field: string): HttpResponse => ({
   body: { message: new NotFoundError(field).message, typeError: 'NotFound' },
   statusCode: 404,
 })
+
+export const unauthorized = (): HttpResponse => ({
+  body: { message: "You don't have permission to access this resource", typeError: 'Unauthorized' },
+  statusCode: 401,
+})
