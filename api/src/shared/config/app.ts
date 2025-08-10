@@ -1,11 +1,13 @@
-import cors from 'cors';
-import express from 'express';
+import cors from 'cors'
+import express from 'express'
 
-const app = express();
+import snippetsRoutes from '@/modules/snippets/main/routes/snippet.routes'
 
-app.use(express.json());
-app.use(cors());
+const app = express()
 
-export { app };
+app.use(express.json())
+app.use(cors())
 
+snippetsRoutes(app)
 
+export { app }
