@@ -7,4 +7,8 @@ export class SnippetsRepository implements ISnippetsRepo {
     const response = await SnippetModel.create(params)
     return response.toObject()
   }
+
+  async update(_id: string, params: Partial<Snippet>): Promise<null | Snippet> {
+    return SnippetModel.findByIdAndUpdate({ _id }, params, { new: true }).exec()
+  }
 }
