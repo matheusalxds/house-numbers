@@ -32,6 +32,4 @@ describe('SnippetsRepository', () => {
       expect(created.text).toBe(mockedSnippet.text)
     })
   })
-
-
 })

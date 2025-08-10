@@ -7,6 +7,4 @@ export class SnippetsRepository implements ISnippetsRepo {
     const response = await SnippetModel.create(params)
     return response.toObject()
   }
- 
-
 }
