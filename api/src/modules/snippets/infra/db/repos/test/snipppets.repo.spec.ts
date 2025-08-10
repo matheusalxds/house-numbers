@@ -46,5 +46,12 @@ describe('SnippetsRepository', () => {
       expect(result).toBeTruthy()
       expect(result?.text).toBe(newText)
     })
+
+    it('should return null if no snippet is found', async () => {
+      const invalidId = '6123456789abcdef01234567'
+      const result = await sut.update(invalidId, { text: 'new_text' })
+
+      expect(result).toBeNull()
+    })
   })
 })
