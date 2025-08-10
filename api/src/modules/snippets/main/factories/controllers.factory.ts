@@ -1,5 +1,7 @@
 import { CreateSnippetController } from '@/modules/snippets/application/controllers/snippet-create.controller'
+import { ListAllSnippetsController } from '@/modules/snippets/application/controllers/snippet-list-all.controller'
 import { CreateSnippetUC } from '@/modules/snippets/domain/use-cases/create-snippet'
+import { FindAllSnippetsUC } from '@/modules/snippets/domain/use-cases/find-all-snippets'
 import { UpdateSnippetUC } from '@/modules/snippets/domain/use-cases/update-snippet'
 import { makeIA } from '@/modules/snippets/main/factories/ia.factory'
 import { makeSnippetRepo } from '@/modules/snippets/main/factories/repos.factory'
@@ -11,4 +13,10 @@ export const makeCreateSnippetController = (): CreateSnippetController => {
   const createUC = new CreateSnippetUC(repository, logger)
   const updateUC = new UpdateSnippetUC(repository, logger)
   return new CreateSnippetController(makeIA(), createUC, updateUC, logger)
+}
+
+export const makeListAllSnippetsController = (): ListAllSnippetsController => {
+  const repository = makeSnippetRepo()
+  const findAll = new FindAllSnippetsUC(repository)
+  return new ListAllSnippetsController(findAll, makeLogger())
 }

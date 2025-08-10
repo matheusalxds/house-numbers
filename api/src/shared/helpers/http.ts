@@ -1,10 +1,10 @@
-import { ZodError } from 'zod';
+import { ZodError } from 'zod'
 
-import { ServerError } from '@/shared/errors/http';
+import { ServerError } from '@/shared/errors/http'
 
 export interface HttpResponse<T = any> {
-  body: T;
-  statusCode: number;
+  body: T
+  statusCode: number
 }
 
 export const serverError = (error: Error): HttpResponse<Error> => ({
@@ -23,4 +23,7 @@ export const badRequest = (error: Error | ZodIssue[]): HttpResponse => ({
   statusCode: 400,
 })
 
-
+export const ok = <T>(data: T): HttpResponse<T> => ({
+  body: data,
+  statusCode: 200,
+})
