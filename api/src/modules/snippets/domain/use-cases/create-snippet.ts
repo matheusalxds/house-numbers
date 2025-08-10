@@ -4,7 +4,8 @@ import { ISnippetsRepo } from '@/modules/snippets/domain/protocols/repos/snippet
 export class CreateSnippetUC {
   constructor(private snippetsRepository: ISnippetsRepo) {}
 
-  async perform(input: Pick<Snippet, 'text'>): Promise<void> {
-    await this.snippetsRepository.create(input)
+  async perform(input: Pick<Snippet, 'text'>): Promise<Snippet> {
+    const response = await this.snippetsRepository.create(input)
+    return response
   }
 }
