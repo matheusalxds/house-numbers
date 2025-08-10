@@ -4,18 +4,21 @@ import { mock, MockProxy } from 'vitest-mock-extended'
 import { ISnippetsRepo } from '@/modules/snippets/domain/protocols/repos/snippets-repo.interface'
 import { UpdateSnippetUC } from '@/modules/snippets/domain/use-cases/update-snippet'
 import { mockSnippet } from '@/modules/snippets/infra/db/models/test/mock/snippet.mock'
+import { ILogger } from '@/shared/logger/logger'
 
 describe('UpdateSnippetUC', () => {
   let sut: UpdateSnippetUC
   let repo: MockProxy<ISnippetsRepo>
+  let logger: MockProxy<ILogger>
   let mockedSnippet = mockSnippet()
 
   beforeEach(() => {
     repo = mock<ISnippetsRepo>()
+    logger = mock<ILogger>()
     mockedSnippet = mockSnippet()
     repo.update.mockResolvedValue(mockedSnippet)
 
-    sut = new UpdateSnippetUC(repo)
+    sut = new UpdateSnippetUC(repo, logger)
   })
 
   it('should call repo with correct params', async () => {
