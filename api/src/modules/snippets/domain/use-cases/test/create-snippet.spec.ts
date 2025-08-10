@@ -28,4 +28,10 @@ describe('CreateSnippetUC', () => {
     expect(repo.create).toHaveBeenCalledTimes(1)
     expect(repo.create).toHaveBeenCalledWith(params)
   })
+
+  it('should return correct values on success', async () => {
+    const newSnippet = await sut.perform(mockParams())
+
+    expect(newSnippet).toEqual(mockedSnippet)
+  })
 })
