@@ -1,6 +1,6 @@
 import pino, { Logger as PinoLogger } from 'pino'
 
-import { LogMsgIn, msgEnd, msgStart } from '@/shared/logger/log-msg'
+import { LogMsgIn, LogMsgMidIn, msgEnd, msgMid, msgStart } from '@/shared/logger/log-msg'
 
 export const logger = pino({
   transport: {
@@ -41,8 +41,20 @@ export class Logger implements ILogger {
     this.log.error(msgEnd(logMs, data))
   }
 
+  errorMsg = (logMs: string) => {
+    this.log.error(logMs)
+  }
+
   infoEnd = (logMs: LogMsgIn, data?: object) => {
     this.log.info(msgEnd(logMs, data))
+  }
+
+  infoMid = (logMs: LogMsgMidIn, data?: object) => {
+    this.log.info(msgMid(logMs, data))
+  }
+
+  infoMsg = (logMs: string) => {
+    this.log.info(logMs)
   }
 
   infoStart = (logMs: LogMsgIn, data?: object) => {

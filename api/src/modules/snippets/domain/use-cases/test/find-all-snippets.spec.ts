@@ -5,15 +5,18 @@ import { ISnippetsRepo } from '@/modules/snippets/domain/protocols/repos/snippet
 import { FindAllSnippetsUC } from '@/modules/snippets/domain/use-cases/find-all-snippets'
 import { mockSnippet } from '@/modules/snippets/infra/db/models/test/mock/snippet.mock'
 import { PaginationParamsDTO } from '@/shared/db/dto/pagination'
+import { ILogger } from '@/shared/logger/logger'
 
 describe('FindAllSnippetsUC', () => {
   let sut: FindAllSnippetsUC
   let repo: MockProxy<ISnippetsRepo>
+  let logger: MockProxy<ILogger>
   let mockedSnippet = mockSnippet()
 
   beforeEach(() => {
     repo = mock<ISnippetsRepo>()
     mockedSnippet = mockSnippet()
+    logger = mock<ILogger>()
     repo.findAll.mockResolvedValue({
       data: [mockedSnippet],
       limit: 10,
@@ -22,7 +25,7 @@ describe('FindAllSnippetsUC', () => {
       totalPages: 10,
     })
 
-    sut = new FindAllSnippetsUC(repo)
+    sut = new FindAllSnippetsUC(repo, logger)
   })
 
   const mockParams = (): PaginationParamsDTO => ({ limit: 10, page: 1 })

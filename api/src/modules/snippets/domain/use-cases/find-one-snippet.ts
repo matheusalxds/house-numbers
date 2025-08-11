@@ -1,18 +1,21 @@
 import { Snippet } from '@/modules/snippets/domain/entities/snippet.entity'
 import { SnippetsRepository } from '@/modules/snippets/infra/db/repos/snippet.repo'
-import { LogMsgIn, msgEnd, msgStart } from '@/shared/logger/log-msg'
-import { logger } from '@/shared/logger/logger'
+import { LogMsgIn } from '@/shared/logger/log-msg'
+import { ILogger } from '@/shared/logger/logger'
 
 export class FindOneSnippetUC {
   private readonly logMsg: LogMsgIn = { fn: 'perform', origin: FindOneSnippetUC.name }
 
-  constructor(private snippetsRepository: SnippetsRepository) {}
+  constructor(
+    private snippetsRepository: SnippetsRepository,
+    private readonly logger: ILogger,
+  ) {}
 
   async perform(id: string): Promise<null | Snippet> {
-    logger.info(msgStart(this.logMsg, { id }))
+    this.logger.infoStart(this.logMsg, { id })
     const snippet = await this.snippetsRepository.findOne(id)
 
-    logger.info(msgEnd(this.logMsg, { snippet }))
+    this.logger.infoEnd(this.logMsg, { snippet })
     return snippet
   }
 }

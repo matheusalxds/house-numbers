@@ -19,12 +19,12 @@ export const makeCreateSnippetController = (): CreateSnippetController => {
 
 export const makeListAllSnippetsController = (): ListAllSnippetsController => {
   const repository = makeSnippetRepo()
-  const findAll = new FindAllSnippetsUC(repository)
+  const findAll = new FindAllSnippetsUC(repository, makeLogger())
   return new ListAllSnippetsController(findAll, makeLogger())
 }
 
 export const makeListOneSnippetController = (): ListOneSnippetController => {
   const repository = makeSnippetRepo()
-  const findOne = new FindOneSnippetUC(repository)
+  const findOne = new FindOneSnippetUC(repository, makeLogger())
   return new ListOneSnippetController(findOne, makeLogger())
 }
