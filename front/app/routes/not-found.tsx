@@ -1,10 +1,10 @@
-import type { Route } from './+types/not-found';
+import type { Route } from "./+types/not-found";
 import { Link } from 'react-router';
 import { Home } from 'lucide-react';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'Page Not Found' },
+    { title: "Page Not Found" },
   ];
 }
 
@@ -20,8 +20,8 @@ export default function NotFound() {
         to="/auth/login"
         className="flex gap-2 mt-6 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1"
       >
-        <Home/> Return to login
+        <Home /> Return to login
       </Link>
     </div>
-  );
+  )
 }

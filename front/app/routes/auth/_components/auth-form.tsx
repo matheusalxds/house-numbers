@@ -7,6 +7,7 @@ import { useFetcher } from 'react-router';
 import { Input } from '~/components/ui/input';
 import { Button } from '~/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { toast } from 'sonner';
 
 const schema = z.object({
   email: z.email('Required').trim(),
@@ -22,16 +23,21 @@ export default function AuthForm({ onCreated, formType }: Props) {
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: 'onBlur',
-    defaultValues: { email: 'm@gmail.com', password: '12345678' },
+    defaultValues: { email: '', password: '' },
   });
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data?.ok) {
-      console.log('fetchData', fetcher.data.snippet);
       onCreated();
       form.reset();
     }
   }, [fetcher.state, fetcher.data, form]);
+
+  useEffect(() => {
+    if (fetcher.data?.error) {
+      toast.error(fetcher.data?.error)
+    }
+  }, [fetcher.data?.error]);
 
   function onSubmit(values: FormData) {
     const fd = new FormData();
@@ -98,6 +104,9 @@ export default function AuthForm({ onCreated, formType }: Props) {
         >
           {loading ? 'Loading...' : btnSubmitTitles[formType]}
         </Button>
+        {fetcher.data?.error && (
+          <p className="text-sm text-red-600" role="alert">{fetcher.data.error}</p>
+        )}
       </form>
     </Form>
   );

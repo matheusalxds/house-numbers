@@ -23,14 +23,22 @@ export async function action({ request }: { request: Request }) {
     });
   }
 
-  const register = await res.json();
+  const apiResponse = await res.json();
+
+  if (apiResponse.token === null) {
+    return new Response(JSON.stringify({ ok: false, error: 'E-mail already in use' }), {
+      status: res.status,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const headers = new Headers({
     'Location': `/dashboard/snippets`,
-    'Set-Cookie': `authToken=${register.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=3600`,
+    'Set-Cookie': `authToken=${apiResponse.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=3600`,
   });
 
 
-  if (register.token) {
+  if (apiResponse.token) {
     return new Response(null, { status: 302, headers });
   }
 }

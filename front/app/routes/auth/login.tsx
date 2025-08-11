@@ -23,14 +23,20 @@ export async function action({ request }: { request: Request }) {
     });
   }
 
-  const register = await res.json();
+  const apiResponse = await res.json();
+  if (apiResponse.token === '') {
+    return new Response(JSON.stringify({ ok: false, error: 'User or Password is incorrect' }), {
+      status: res.status,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const headers = new Headers({
     'Location': `/dashboard/snippets`,
-    'Set-Cookie': `authToken=${register.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=3600`,
+    'Set-Cookie': `authToken=${apiResponse.token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=3600`,
   });
 
-
-  if (register.token) {
+  if (apiResponse.token) {
     return new Response(null, { status: 302, headers });
   }
 }
@@ -45,8 +51,7 @@ export default function Login() {
           <h1 className="text-2xl font-semibold tracking-tight text-gray-900 pb-4">Login</h1>
           <RegisterForm onCreated={handleCreated} formType="login"/>
           <div className="mt-4 text-center text-sm text-gray-600">
-            Don't have an account? <Link to="/auth/register" className="text-green-700 hover:underline font-semibold">Create
-            here</Link>
+            Don't have an account? <Link to="/auth/register" className="text-green-700 hover:underline font-semibold">Create here</Link>
           </div>
         </div>
       </div>

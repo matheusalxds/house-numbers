@@ -1,9 +1,9 @@
-import type { Route } from './+types/redirect';
+import type { Route } from "./+types/redirect";
 import { redirect } from 'react-router';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'House Number' },
+    { title: "House Number" },
   ];
 }
 
@@ -12,5 +12,5 @@ export function loader() {
 }
 
 export default function Redirect() {
-  return null;
+  return null
 }
