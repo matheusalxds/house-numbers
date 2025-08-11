@@ -26,6 +26,21 @@ services:
     networks:
       - localnet
 
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: front
+    restart: always
+    ports:
+      - '3030:3000'
+    env_file:
+      - ./front/.env
+    depends_on:
+      - api
+    networks:
+      - localnet
+
 volumes:
   mongodb_data:
 
