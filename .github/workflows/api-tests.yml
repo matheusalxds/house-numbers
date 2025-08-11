@@ -1,0 +1,91 @@
+name: API Tests
+
+on:
+  push:
+    paths:
+      - 'api/**'
+      - 'front/**'
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: 'api/yarn.lock'
+
+      - name: Install dependencies
+        working-directory: ./api
+        run: yarn install
+
+      - name: Create env file
+        working-directory: ./api
+        run: |
+          echo "DB_URL=db_url" >> .env
+          echo "JWT_SECRET=jwt_secret" >> .env
+          echo "OPENAI_API_KEY=open_ai_secret" >> .env
+
+      - name: Run tests
+        working-directory: ./api
+        run: yarn test
+  build-api-docker:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build API Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/Dockerfile
+          push: false
+          load: true
+          tags: house-numbers-api:test
+
+      - name: Display image size
+        run: |
+          echo "Image details:"
+          docker images house-numbers-api:test --format "Size: {{.Size}}"
+
+  build-frontend-docker:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Frontend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./front
+          file: ./front/Dockerfile
+          push: false
+          load: true
+          tags: house-numbers-frontend:test
+
+      - name: Display Frontend image size
+        run: |
+          echo "Image details:"
+          docker images house-numbers-frontend:test --format "Size: {{.Size}}"

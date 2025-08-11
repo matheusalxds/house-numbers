@@ -10,7 +10,7 @@ import {
 
 const baseRoute = '/v1/auth/sign-up'
 
-describe.only('SignUpController', () => {
+describe('SignUpController', () => {
   const mockParams = () => ({
     email: 'any_valid@mail.com',
     password: 'any_password',

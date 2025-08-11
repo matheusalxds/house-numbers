@@ -11,7 +11,7 @@ import {
 const signInRoute = '/v1/auth/sign-up'
 const baseRoute = '/v1/auth/login'
 
-describe.only('LoginController', () => {
+describe('LoginController', () => {
   const mockParams = () => ({
     email: 'any_valid@mail.com',
     password: 'any_password',
