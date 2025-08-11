@@ -1,3 +1,4 @@
 import { Hasher } from '@/modules/auth/infra/cryptography/hasher.adapter'
+import { env } from '@/shared/config/env'
 
-export const makeHasher = (): Hasher => new Hasher('random_secret', '1d', 10)
+export const makeHasher = (): Hasher => new Hasher(env.JWT_SECRET, '1d', 10)
