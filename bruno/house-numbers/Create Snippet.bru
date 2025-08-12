@@ -1,0 +1,25 @@
+meta {
+  name: Create Snippet
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/v1/snippets
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: <your_token>
+}
+
+body:json {
+  {
+    "text": "Cavaleiros do Zodíaco é um anime e mangá criado por Masami Kurumada que conquistou fãs no mundo todo desde sua estreia nos anos 80. A história acompanha um grupo de jovens guerreiros conhecidos como Cavaleiros, cuja missão é proteger a reencarnação da deusa Atena. Cada cavaleiro utiliza uma armadura sagrada ligada a uma constelação e é capaz de manipular o Cosmo, energia interior que lhes concede força, velocidade e técnicas especiais. O protagonista, Seiya de Pégaso, junto a Shiryu de Dragão, Hyoga de Cisne, Shun de Andrômeda e Ikki de Fênix, enfrenta inimigos poderosos em sagas marcantes como Santuário, Asgard, Poseidon e Hades. A obra mistura ação, drama e mitologia grega, explorando temas como amizade, sacrifício e perseverança. Com lutas épicas e personagens carismáticos, Cavaleiros do Zodíaco se tornou um marco da cultura pop, influenciando gerações e permanecendo relevante com novas séries, filmes e adaptações."
+  }
+}
+
+settings {
+  encodeUrl: true
+}
